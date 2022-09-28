@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+// import * from '../../svg';
 
 export const Header = styled.header`
   top: 0;
@@ -24,7 +25,7 @@ export const SearchFormButton = styled.button`
   width: 48px;
   height: 48px;
   border: 0;
-  // background-image: url('https://image.flaticon.com/icons/svg/149/149852.svg');
+  background-image: url('https://cdn4.iconfinder.com/data/icons/virus-pandemic-1/96/magnifying_virus-256.png');
   background-size: 40%;
   background-repeat: no-repeat;
   background-position: center;
