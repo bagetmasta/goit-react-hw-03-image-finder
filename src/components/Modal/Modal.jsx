@@ -12,12 +12,15 @@ export const Modal = ({ largeImageURL, onClose }) => {
 
   instance.show();
 
-  document.addEventListener('keydown', e => {
+  const forCloseBtn = e => {
     if (e.key === 'Escape') {
       closeModalByEscape();
       onClose();
+      document.removeEventListener('keydown', forCloseBtn);
     }
-  });
+  };
+
+  document.addEventListener('keydown', forCloseBtn);
 
   const closeModalByEscape = () => {
     instance.close();
