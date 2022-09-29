@@ -1,63 +1,42 @@
 import PropTypes from 'prop-types';
-import * as basicLightbox from 'basiclightbox';
+import { Component } from 'react';
+import { Overlay, ModalWindow } from './Modal.styled';
 
-export const Modal = ({ largeImageURL, onClose }) => {
-  const instance = basicLightbox.create(`
-    <div class="Overlay">
-      <div class="Modal">
-        <img width="800" height="500" src="${largeImageURL}" alt="" />
-      </div>
-    </div>
-`);
+export class Modal extends Component {
+  static propTypes = {
+    largeImageURL: PropTypes.string,
+    onClose: PropTypes.func.isRequired,
+  };
 
-  instance.show();
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
 
-  const forCloseBtn = e => {
-    if (e.key === 'Escape') {
-      closeModalByEscape();
-      onClose();
-      document.removeEventListener('keydown', forCloseBtn);
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown = e => {
+    if (e.code === 'Escape') {
+      this.props.onClose();
     }
   };
 
-  document.addEventListener('keydown', forCloseBtn);
-
-  const closeModalByEscape = () => {
-    instance.close();
+  handleBackdropClick = e => {
+    if (e.currentTarget === e.target) {
+      this.props.onClose();
+    }
   };
-};
 
-Modal.propTypes = {
-  largeImageURL: PropTypes.string,
-  onClose: PropTypes.func.isRequired,
-};
+  render() {
+    const { largeImageURL } = this.props;
 
-// export class Modal extends Component {
-//   state = {
-//     shouldModalOpen: true,
-//   };
-
-//   componentDidMount() {
-//     document.addEventListener('keydown', e => {
-//       if (e.code === 'Escape') {
-//         console.log('Escape');
-//         this.setState({ shouldModalOpen: false });
-//       }
-//     });
-//   }
-
-//   render() {
-//     const { largeImageURL } = this.props;
-//     const { shouldModalOpen } = this.state;
-
-//     const instance = basicLightbox.create(`
-//     <div class="Overlay">
-//       <div class="Modal">
-//         <img width="800" height="500" src="${largeImageURL}" alt="" />
-//       </div>
-//     </div>
-// `);
-
-//     return shouldModalOpen ? instance.show() : instance.close();
-//   }
-// }
+    return (
+      <Overlay onClick={this.handleBackdropClick}>
+        <ModalWindow>
+          <img width="800" height="500" src={largeImageURL} alt="" />
+        </ModalWindow>
+      </Overlay>
+    );
+  }
+}

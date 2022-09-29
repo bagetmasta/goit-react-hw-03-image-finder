@@ -2,11 +2,13 @@ import PropTypes from 'prop-types';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { ImageGalleryList } from './ImageGallery.styled';
 
-export const ImageGallery = ({ hits }) => {
+export const ImageGallery = ({ hits, toggleModal }) => {
   return (
     <ImageGalleryList>
       {hits.map(hit => {
-        return <ImageGalleryItem hit={hit} key={hit.id} />;
+        return (
+          <ImageGalleryItem hit={hit} key={hit.id} toggleModal={toggleModal} />
+        );
       })}
     </ImageGalleryList>
   );
