@@ -64,10 +64,7 @@ export class App extends Component {
         );
       }
 
-      if (this.state.hits.length === totalHits) {
-        Notiflix.Notify.warning(
-          `We're sorry, but you've reached the end of search results.`
-        );
+      if (this.state.hits.length + 11 > totalHits) {
         this.setState({ shouldButtonShow: false });
       }
 
