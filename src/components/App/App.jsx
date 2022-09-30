@@ -20,6 +20,14 @@ export class App extends Component {
     largeImageURL: '',
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    const { query, page } = this.state;
+
+    if (prevState.page !== page) {
+      this.fetchHits(query);
+    }
+  }
+
   toggleModal = largeImageURL => {
     this.setState(({ isModalOpen }) => ({
       isModalOpen: !isModalOpen,
@@ -27,12 +35,10 @@ export class App extends Component {
     }));
   };
 
-  addHits = async () => {
-    await this.setState(prevState => ({
+  onLoadMoreClick = () => {
+    this.setState(prevState => ({
       page: prevState.page + 1,
     }));
-
-    this.fetchHits(this.state.query);
   };
 
   onSubmitClick = query => {
@@ -64,7 +70,7 @@ export class App extends Component {
         );
       }
 
-      if (this.state.hits.length + 11 > totalHits) {
+      if (this.state.page >= Math.ceil(totalHits / 12)) {
         this.setState({ shouldButtonShow: false });
       }
 
@@ -96,7 +102,7 @@ export class App extends Component {
 
         {isLoading && <Loader />}
         {hits.length > 0 && shouldButtonShow && (
-          <Button onClick={this.addHits} />
+          <Button onClick={this.onLoadMoreClick} />
         )}
       </AppContainer>
     );
